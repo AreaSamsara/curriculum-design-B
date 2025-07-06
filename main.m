@@ -12,7 +12,10 @@ clear;close all;
 %% 交互界面
 stop = false;
 
-while(stop == false)
+while(stop == false)        
+    % interactiveUI();
+    % break;
+
     % sel = menu('演示界面菜单',...
     %     '无噪声：估计偏差-信号频率',...
     %     '有噪声：高信噪比下，RMS误差-信号频率',...
@@ -51,10 +54,21 @@ while(stop == false)
     
     if ~ok  % 如果用户取消选择
         flag = 0;
-        continue;
+        break;
     end
 
     stop = runEstimate(sel);
+    if stop
+        break;
+    end
+
+    % 添加等待环节
+    h = uicontrol('Style', 'pushbutton', 'String', '返回菜单',...
+                 'Position', [10 10 100 30],...
+                 'Callback', 'uiresume(gcbf)');
+    uiwait(gcf);  % 暂停直到点击按钮
+    delete(h);    % 删除临时按钮
+
 end
 
 function stop = runEstimate(sel)
@@ -66,20 +80,20 @@ function stop = runEstimate(sel)
 
     switch(sel)
         case(1)
-       %% 无噪声：估计偏差-信号频率
+            %% 无噪声：估计偏差-信号频率
             situation.name = 'ideal';
             situation.f_seq = 210:0.5:220;  %设置仿真频率，需要时可以修改
             situation.SNR_dB = [];
             situation.Iteration = [];
             situation.noise_type = [];
             situation.Interfere = [];
-%            windows_type = {'none','hanning','hamming','blackman','blackmanharris'};
+            % windows_type = {'none','hanning','hamming','blackman','blackmanharris'};
             windows_type = {'none'};    % 选择窗函数，可修改
             estimate_method = {'direct','quinn&AM','jacobsen','segment FFT'};   %选择估计算法，可修改
-%            estimate_method = {'jacobsen','segment FFT'};
-%            estimate_method = {'jacobsen'};
+            % estimate_method = {'jacobsen','segment FFT'};
+            % estimate_method = {'jacobsen'};
             simlus(fs,N,situation,windows_type,estimate_method);
-        case(2)
+            case(2)
        %% 有噪声：高信噪比下，RMS误差-信号频率
             situation.name = 'noise';
             situation.f_seq = 210:0.5:220;  % 设置仿真频率，可修改
@@ -144,7 +158,7 @@ function stop = runEstimate(sel)
             situation.Iteration = [];   
             situation.noise_type = [];
             situation.Interfere = 210:0.5:220;  %设置单频干扰频率
-%             windows_type = {'none','hanning','hamming','blackman','blackmanharris'};
+    % windows_type = {'none','hanning','hamming','blackman','blackmanharris'};
             windows_type = {'none'};            % 窗函数类型，可改
             estimate_method = {'quinn&AM','jacobsen','segment FFT'};    % 估计算法，可改
             simlus(fs,N,situation,windows_type,estimate_method);
@@ -156,7 +170,7 @@ function stop = runEstimate(sel)
             situation.Iteration = [];
             situation.noise_type = [];
             situation.Interfere = 210:0.5:220;      %设置单频干扰频率
-%             windows_type = {'none','hanning','hamming','blackman','blackmanharris'};
+    % windows_type = {'none','hanning','hamming','blackman','blackmanharris'};
             windows_type = {'none'};            % 窗函数类型，可改
             estimate_method = {'quinn&AM','jacobsen','segment FFT'};    % 估计算法，可改
             simlus(fs,N,situation,windows_type,estimate_method);
@@ -168,7 +182,7 @@ function stop = runEstimate(sel)
             situation.Iteration = [];
             situation.noise_type = [];
             situation.Interfere = 220;      %设置单频干扰频率，可改,但只能是一个值
-%             windows_type = {'none','hanning','hamming','blackman','blackmanharris'};
+    % windows_type = {'none','hanning','hamming','blackman','blackmanharris'};
             windows_type = {'none'};            % 窗函数类型，可改
             estimate_method = {'quinn&AM','jacobsen','segment FFT'};        % 估计算法，可改
             simlus(fs,N,situation,windows_type,estimate_method);

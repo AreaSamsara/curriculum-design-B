@@ -49,7 +49,7 @@ for i = 1:length(delta_f_range)
         % 应用各种频率估计算法
         f_est_fft = fft_peak_estimate(x, fs);
         f_est_quadratic = quadratic_estimate(x, fs);
-        f_est_quinn = estimate_quinn(x, fs);
+        f_est_quinn = quinn_estimate(x, fs);
         f_est_rife = rife_estimate(x, fs);
         
         % 计算估计误差

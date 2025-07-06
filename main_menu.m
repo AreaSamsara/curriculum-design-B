@@ -9,8 +9,7 @@ function selection = main_menu()
             '比较不同SNR下的性能',...
             '比较不同干扰类型的性能',...
             '比较噪声/干扰服从不同概率分布函数的性能',...
-            '比较不同频率估计算法的性能',...
-            'Exit'};
+            '比较不同频率估计算法的性能'};
         
         [sel, ok] = listdlg(...
             'PromptString', '请选择演示模式 (可单选)',...
@@ -54,9 +53,7 @@ function selection = deal_main_menu(origin_selection)
             selection = 5;
         case(6)
             selection = 6;
-        case(7)
-            selection = 11;
         otherwise
-            selection = 11; 
+            selection = 0; 
     end
 end

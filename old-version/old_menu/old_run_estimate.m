@@ -178,6 +178,6 @@ function stop = old_run_estimate(sel)
         case(11)    %% 退出程序
             stop = true;
         case(12)
-            window();
+            compareWindowFunctionsXwz();
     end
 end

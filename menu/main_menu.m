@@ -23,8 +23,6 @@ function selection = main_menu()
             break;
         end
 
-        sel = deal_main_menu(sel)
-
         stop = run_estimate(sel);
         if stop
             break;
@@ -36,25 +34,5 @@ function selection = main_menu()
                        'Callback', 'uiresume(gcbf)');
         uiwait(gcf);  % 暂停直到点击按钮
         delete(h);    % 删除临时按钮
-    end
-end
-
-function selection = deal_main_menu(origin_selection)
-    selection = 0; 
-    switch origin_selection
-        case(1)
-            selection = 12;
-        case(2)
-            selection = 2;
-        case(3)
-            selection = 3;
-        case(4)
-            selection = 4;
-        case(5)
-            selection = 5;
-        case(6)
-            selection = 6;
-        otherwise
-            selection = 0; 
     end
 end

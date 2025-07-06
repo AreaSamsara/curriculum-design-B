@@ -27,6 +27,7 @@ for i = 1:length(SNR_range)
         t = (0:N-1)/fs;
         
         % 生成有用信号
+        A_useful = 1;
         phase_useful = 2*pi*rand;
         x_useful = A_useful * sin(2*pi*f_useful*t + phase_useful);
         

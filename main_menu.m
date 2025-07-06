@@ -10,8 +10,7 @@ function selection = main_menu()
             '比较不同干扰类型的性能',...
             '比较噪声/干扰服从不同概率分布函数的性能',...
             '比较不同频率估计算法的性能',...
-            'Exit',...
-            '窗口'};
+            'Exit'};
         
         [sel, ok] = listdlg(...
             'PromptString', '请选择演示模式 (可单选)',...
@@ -23,6 +22,8 @@ function selection = main_menu()
         if ~ok  % 如果用户取消选择
             break;
         end
+
+        sel = deal_main_menu(sel)
 
         stop = old_run_estimate(sel);
         if stop
@@ -38,6 +39,24 @@ function selection = main_menu()
     end
 end
 
-function output = deal_main_menu(input)
-    
+function selection = deal_main_menu(origin_selection)
+    selection = 0; 
+    switch origin_selection
+        case(1)
+            selection = 12;
+        case(2)
+            selection = 2;
+        case(3)
+            selection = 3;
+        case(4)
+            selection = 4;
+        case(5)
+            selection = 5;
+        case(6)
+            selection = 6;
+        case(7)
+            selection = 11;
+        otherwise
+            selection = 11; 
+    end
 end

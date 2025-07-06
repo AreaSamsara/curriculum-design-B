@@ -1,6 +1,6 @@
 function selection = main_menu()
     stop = false;
-    
+
     while(stop == false)  
         % 替换原始的menu函数为更美观的listdlg
         options = {
@@ -24,7 +24,7 @@ function selection = main_menu()
             break;
         end
 
-        stop = runEstimate(sel);
+        stop = old_run_estimate(sel);
         if stop
             break;
         end

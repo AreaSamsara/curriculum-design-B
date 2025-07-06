@@ -10,9 +10,9 @@ compareSNRPerformance.m
 功能：在不同信噪比(SNR)条件下评估系统性能指标
 
 compareInterferenceAmtiple.m
-功能：对比系统对不同大小的干扰
+功能：对比系统对不同干扰大小下的性能
 compareInterferenceInterval.m
-功能：对比系统对不同间隔的干扰
+功能：对比系统对不同干扰间隔下的性能
 
 compareNoiseDistributions.m
 功能：研究噪声服从不同概率分布（高斯、瑞利、均匀等）时的系统性能

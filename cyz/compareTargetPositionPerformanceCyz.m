@@ -1,4 +1,4 @@
-function [] = compareTargetPositionPerformance()
+function [] = compareTargetPositionPerformanceCyz()
 
 %% 主测试脚本
 clear all; close all; clc;

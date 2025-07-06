@@ -1,4 +1,4 @@
-function [] = compareWindowFunctions()
+function [] = compareWindowFunctionsXwz()
 %% Rife插值算法在不同加窗下的性能比较（500-510Hz均匀分布）
 clear; clc; close all;
 

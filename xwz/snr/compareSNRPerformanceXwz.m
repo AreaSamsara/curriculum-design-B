@@ -1,4 +1,4 @@
-function [] = compareSNRPerformance()
+function [] = compareSNRPerformanceXwz()
 
 %% 频率估计算法对比仿真
 clear all; close all; clc;

@@ -18,8 +18,6 @@ function stop = run_estimate(sel)
             % 比较不同干扰间隔下的性能
             compareInterferenceIntervalXwz();
         case(6)
-            
-        case(7)
 
         otherwise
             stop = true;

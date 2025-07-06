@@ -1,4 +1,4 @@
-function interactiveUI()
+function interactive_ui()
     % 创建主界面
     fig = uifigure('Name', '参数设置', 'Position', [100 100 400 250]);
     

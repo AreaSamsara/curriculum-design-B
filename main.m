@@ -9,5 +9,4 @@
 
 addpath(genpath(pwd));
 clear;close all;
-% old_menu();
 main_menu();

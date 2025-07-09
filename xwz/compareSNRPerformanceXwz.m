@@ -14,7 +14,7 @@ num_runs = 50;              % 每个参数点的重复试验次数
 %% 初始化结果存储
 est_fft = zeros(length(SNR_range), num_runs);
 est_quadratic = zeros(length(SNR_range), num_runs);
-est_quinn = zeros(length(SNR_range), num_runs);
+est_phase = zeros(length(SNR_range), num_runs);
 est_rife = zeros(length(SNR_range), num_runs);
 
 %% 主循环 - 改变信噪比
@@ -42,7 +42,7 @@ for i = 1:length(SNR_range)
         % 应用各种频率估计算法
         est_fft(i, run) = fft_peak_estimate(x, fs);
         est_quadratic(i, run) = quadratic_estimate(x, fs);
-        est_quinn(i, run) = quinn_estimate(x, fs);
+        est_phase(i, run) = dft_phase_estimation(x, fs);
         est_rife(i, run) = rife_estimate(x, fs);
     end
 end
@@ -50,19 +50,19 @@ end
 %% 计算平均估计值
 mean_est_fft = mean(est_fft, 2);
 mean_est_quadratic = mean(est_quadratic, 2);
-mean_est_quinn = mean(est_quinn, 2);
+mean_est_phase = mean(est_phase, 2);
 mean_est_rife = mean(est_rife, 2);
 
 %% 绘制估计频率随SNR变化曲线
 figure('Position', [100, 100, 800, 600]);
 plot(SNR_range, mean_est_fft, 'b-o', ...
      SNR_range, mean_est_quadratic, 'r-s', ...
-     SNR_range, mean_est_quinn, 'g-d', ...
+     SNR_range, mean_est_phase, 'g-d', ...
      SNR_range, mean_est_rife, 'm-^', 'LineWidth', 1.5);
 hold on;
 plot(SNR_range, f_useful*ones(size(SNR_range)), 'k--', 'LineWidth', 2); % 真实频率
 grid on;
-legend('FFT直接估计', '二次多项式插值', 'Quinn A&M', 'Rife插值', '真实频率');
+legend('FFT直接估计', '二次多项式插值', 'dft相位估计', 'Rife插值', '真实频率');
 xlabel('信噪比 (dB)');
 ylabel('估计频率 (Hz)');
 title('不同频率估计算法的估计值随信噪比变化');

@@ -15,7 +15,7 @@ num_runs = 50;              % 每个参数点的重复试验次数
 %% 初始化结果存储
 errors_fft = zeros(length(delta_f_range), num_runs);
 errors_quadratic = zeros(length(delta_f_range), num_runs);
-errors_quinn = zeros(length(delta_f_range), num_runs);
+errors_phase = zeros(length(delta_f_range), num_runs);
 errors_rife = zeros(length(delta_f_range), num_runs);
 
 %% 主循环 - 改变干扰信号频率
@@ -49,13 +49,13 @@ for i = 1:length(delta_f_range)
         % 应用各种频率估计算法
         f_est_fft = fft_peak_estimate(x, fs);
         f_est_quadratic = quadratic_estimate(x, fs);
-        f_est_quinn = quinn_estimate(x, fs);
+        f_est_phase = dft_phase_estimation(x, fs);
         f_est_rife = rife_estimate(x, fs);
         
         % 计算估计误差
         errors_fft(i, run) = f_est_fft - f_useful;
         errors_quadratic(i, run) = f_est_quadratic - f_useful;
-        errors_quinn(i, run) = f_est_quinn - f_useful;
+        errors_phase(i, run) = f_est_phase - f_useful;
         errors_rife(i, run) = f_est_rife - f_useful;
     end
 end
@@ -63,17 +63,17 @@ end
 %% 计算平均误差
 mean_errors_fft = mean(abs(errors_fft), 2);
 mean_errors_quadratic = mean(abs(errors_quadratic), 2);
-mean_errors_quinn = mean(abs(errors_quinn), 2);
+mean_errors_phase = mean(abs(errors_phase), 2);
 mean_errors_rife = mean(abs(errors_rife), 2);
 
 %% 绘制频率估计误差随相对位置变化曲线
 figure('Position', [100, 100, 800, 600]);
 plot(delta_f_range, mean_errors_fft, 'b-o', ...
      delta_f_range, mean_errors_quadratic, 'r-s', ...
-     delta_f_range, mean_errors_quinn, 'g-d', ...
+     delta_f_range, mean_errors_phase, 'g-d', ...
      delta_f_range, mean_errors_rife, 'm-^', 'LineWidth', 1.5);
 grid on;
-legend('FFT直接估计', '二次多项式插值', 'Quinn A&M', 'Rife插值');
+legend('FFT直接估计', '二次多项式插值', 'dft相位估计', 'Rife插值');
 xlabel('干扰与目标频率差 (Hz)');
 ylabel('频率估计平均误差 (Hz)');
 title('不同频率估计算法的误差随干扰相对位置变化');

@@ -15,7 +15,7 @@ num_runs = 50;              % 每个参数点的重复试验次数
 %% 初始化结果存储
 estimates_fft = zeros(length(sir_range), num_runs);
 estimates_quadratic = zeros(length(sir_range), num_runs);
-estimates_quinn = zeros(length(sir_range), num_runs);
+estimates_phase = zeros(length(sir_range), num_runs);
 estimates_rife = zeros(length(sir_range), num_runs);
 
 %% 主循环 - 改变信干比
@@ -53,7 +53,7 @@ for i = 1:length(sir_range)
         % 应用各种频率估计算法
         estimates_fft(i, run) = fft_peak_estimate(x, fs);
         estimates_quadratic(i, run) = quadratic_estimate(x, fs);
-        estimates_quinn(i, run) = quinn_estimate(x, fs);
+        estimates_phase(i, run) = dft_phase_estimation(x, fs);
         estimates_rife(i, run) = rife_estimate(x, fs);
     end
 end
@@ -61,19 +61,19 @@ end
 %% 计算平均估计值
 mean_estimates_fft = mean(estimates_fft, 2);
 mean_estimates_quadratic = mean(estimates_quadratic, 2);
-mean_estimates_quinn = mean(estimates_quinn, 2);
+mean_estimates_phase = mean(estimates_phase, 2);
 mean_estimates_rife = mean(estimates_rife, 2);
 
 %% 绘制估计频率随SIR变化曲线
 figure('Position', [100, 100, 800, 600]);
 plot(sir_range, mean_estimates_fft, 'b-o', ...
      sir_range, mean_estimates_quadratic, 'r-s', ...
-     sir_range, mean_estimates_quinn, 'g-d', ...
+     sir_range, mean_estimates_phase, 'g-d', ...
      sir_range, mean_estimates_rife, 'm-^', 'LineWidth', 1.5);
 hold on;
 plot(sir_range, f_useful*ones(size(sir_range)), 'k--', 'LineWidth', 2); % 真实频率
 grid on;
-legend('FFT直接估计', '二次多项式插值', 'Quinn A&M', 'Rife插值', '真实频率');
+legend('FFT直接估计', '二次多项式插值', 'dft相位估计', 'Rife插值', '真实频率');
 xlabel('信干比 (dB)');
 ylabel('估计频率 (Hz)');
 title('不同频率估计算法的估计值随信干比变化');

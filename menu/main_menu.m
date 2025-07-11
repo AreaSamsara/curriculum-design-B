@@ -27,6 +27,6 @@ function selection = main_menu()
             break;
         end
 
-        pause();
+        menu_pause();
     end
 end

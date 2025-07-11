@@ -20,7 +20,7 @@ function stop = run_estimate(sel)
         case(6)
             % 比较噪声服从不同概率分布
             compareFrequencyEstimators();
-            pause();
+            menu_pause();
         otherwise
             stop = true;
     end

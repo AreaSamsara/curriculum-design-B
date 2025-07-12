@@ -47,10 +47,10 @@ end
 
 % 绘制误差曲线
 figure;
-plot(f_test, errors_fft, 'b', 'LineWidth', 1.5, 'DisplayName', 'FFT Peak');
+plot(f_test, errors_fft, 'b', 'LineWidth', 1.5, 'DisplayName', 'FFT直接估计');
 hold on;
-plot(f_test, errors_rife, 'r', 'LineWidth', 1.5, 'DisplayName', 'Rife');
-plot(f_test, errors_jacobsen, 'g', 'LineWidth', 1.5, 'DisplayName', 'Jacobsen');
+plot(f_test, errors_rife, 'r', 'LineWidth', 1.5, 'DisplayName', 'Rife插值');
+plot(f_test, errors_jacobsen, 'g', 'LineWidth', 1.5, 'DisplayName', '二次多项式插值');
 plot(f_test, errors_phase_diff, 'm', 'LineWidth', 1.5, 'DisplayName', 'DFT Phase');
 hold off;
 
@@ -76,7 +76,7 @@ fprintf('Phase Diff\t%.4f\t\t%.4f\t\t%.4f\n', max(errors_phase_diff), mean(error
 
 end
 
-%% FFT峰值检索算法
+%% FFT直接估计算法
 function f_est = fft_peak_estimate(x, fs, use_window)
     N = length(x);
     
@@ -106,7 +106,7 @@ function f_est = fft_peak_estimate(x, fs, use_window)
     f_est = f_axis(k0);
 end
 
-%% RIFE算法
+%% RIFE插值算法
 function f_est = rife_estimate(x, fs, use_window)
     N = length(x);
     
@@ -164,7 +164,7 @@ function f_est = rife_estimate(x, fs, use_window)
     f_est = f_axis(k0) + r * delta * (fs / N);
 end
 
-%% Jacobsen算法
+%% 二次多项式插值算法
 function f_est = jacobsen_estimator(x, fs, use_window)
     N = length(x);
     
@@ -218,9 +218,8 @@ function f_est = jacobsen_estimator(x, fs, use_window)
     f_est = f_axis(k0) + delta * (fs / N);
 end
 
-%% 相位法
+%% DFT相位法
 function f_est = dft_phase_estimation(signal, fs, use_window)
-    % 基于DFT相位的实正弦波频率和初相高精度估计方法
 % 输入:
 %   signal - 输入实正弦波信号
 %   fs     - 采样频率 (Hz)

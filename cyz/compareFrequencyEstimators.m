@@ -15,7 +15,7 @@ num_trials = 500;    % 每个信噪比下的试验次数
 noise_types = {'Gaussian', 'Uniform', 'Rayleigh', 'Exponential'};
 colors = {'b', 'r', 'g', 'm'};
 line_styles = {'-', '--', ':', '-.'};
-algorithm_names = {'FFT Peak', 'Rife', 'Jacobsen', 'DFT Phase'};
+algorithm_names = {'FFT直接估计', 'Rife插值', '二次多项式插值', 'DFT Phase'};
 
 % 初始化结果存储
 results_rmse = struct();
@@ -165,50 +165,6 @@ for algo_idx = 1:4
     set(gca, 'FontSize', 11);
 end
 
-% % 绘制综合比较图（平均绝对误差）
-% figure('Position', [100, 100, plot_width, plot_height]);
-% hold on;
-% grid on;
-% box on;
-% 
-% title('不同频率估计算法在多种噪声下的平均性能', 'FontSize', 16);
-% xlabel('信噪比 (dB)', 'FontSize', 14);
-% ylabel('平均绝对误差 (Hz)', 'FontSize', 14);
-
-% % 添加FFT分辨率参考线
-% plot(xlim, [fft_res, fft_res], 'k--', 'LineWidth', 2);
-% text(max(snr_range), fft_res, sprintf(' FFT分辨率=%.1fHz', fft_res), ...
-%     'VerticalAlignment', 'bottom', 'FontSize', 12, 'Color', 'k');
-
-% 计算并绘制各算法的平均性能
-% for algo_idx = 1:4
-%     avg_mean_err = zeros(1, length(snr_range));
-%     for snr_idx = 1:length(snr_range)
-%         values = [];
-%         for noise_idx = 1:length(noise_types)
-%             noise_type = noise_types{noise_idx};
-%             values(end+1) = results_mean.(noise_type)(algo_idx, snr_idx);
-%         end
-%         avg_mean_err(snr_idx) = mean(values);
-%     end
-%     
-%     plot(snr_range, avg_mean_err, ...
-%         'LineStyle', line_styles{algo_idx}, ...
-%         'Color', colors{algo_idx}, ...
-%         'LineWidth', line_width+1, ...
-%         'Marker', 'd', ...
-%         'MarkerSize', marker_size+2, ...
-%         'MarkerFaceColor', colors{algo_idx}, ...
-%         'DisplayName', algorithm_names{algo_idx});
-% end
-
-% 设置纵轴范围
-% max_avg = max(avg_mean_err);
-% ylim([0, max_avg * 1.2]);
-% 
-% legend('show', 'Location', 'northeast', 'FontSize', 12);
-% set(gca, 'FontSize', 13);
-
 % 显示统计表格
 fprintf('\n===== 各算法在不同噪声下的最大平均绝对误差 (Hz) =====\n');
 fprintf('信噪比(dB)\tFFT Peak\tRife\t\tJacobsen\tPhase Diff\n');
@@ -353,7 +309,7 @@ function f_est = rife_estimate(x, fs, use_window)
     f_est = f_axis(k0) + r * delta * (fs / N);
 end
 
-%% Jacobsen算法
+%% 二次多项式算法
 function f_est = jacobsen_estimator(x, fs, use_window)
     N = length(x);
     
@@ -396,7 +352,7 @@ function f_est = jacobsen_estimator(x, fs, use_window)
         gamma = 0;
     end
     
-    % Jacobsen插值公式
+    % 二次多项式插值公式
     if k0 > 1 && k0 < length(P_single)
         delta = (gamma - beta) / (2*(2*alpha - beta - gamma));
     else
@@ -407,9 +363,8 @@ function f_est = jacobsen_estimator(x, fs, use_window)
     f_est = f_axis(k0) + delta * (fs / N);
 end
 
-%% 相位差分法
+%% DFT相位差分法
 function f_est = dft_phase_estimation(signal, fs, use_window)
-   % 基于DFT相位的实正弦波频率和初相高精度估计方法
 % 输入:
 %   signal - 输入实正弦波信号
 %   fs     - 采样频率 (Hz)

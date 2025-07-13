@@ -2,7 +2,6 @@ function selection = main_menu()
     stop = false;
 
     while(stop == false)  
-        % 替换原始的menu函数为更美观的listdlg
         options = {
             '比较不同窗函数的影响',...
             '比较目标信号落入不同间隔时的性能',...
@@ -18,11 +17,15 @@ function selection = main_menu()
             'ListSize', [400 300],...  % 调整弹窗大小
             'Name', '仿真选项菜单');
         
-        if ~ok  % 如果用户取消选择
+        % 如果用户取消选择，直接退出菜单
+        if ~ok
             break;
         end
 
+        % 根据选择结果运行对应的估计函数
         stop = run_estimate(sel);
+
+        % 遇到了意外选项，直接退出
         if stop
             break;
         end

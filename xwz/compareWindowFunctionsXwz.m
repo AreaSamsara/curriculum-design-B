@@ -102,18 +102,18 @@ grid on;
 xticks(test_freqs);
 
 % 3. 各窗函数性能对比（箱线图）
-% subplot(2, 2, 3);
-% all_errors = [];
-% groups = [];
-% for w = 1:num_windows
-%     all_errors = [all_errors; bias_results(w, :)'];
-%     groups = [groups; w*ones(num_freqs, 1)];
-% end
-% boxplot(all_errors, groups, 'Labels', windows(:,1));
-% title('各窗函数误差分布对比');
-% ylabel('绝对误差 (Hz)');
-% set(gca, 'XTickLabelRotation', 45);
-% grid on;
+subplot(2, 2, 3);
+all_errors = [];
+groups = [];
+for w = 1:num_windows
+    all_errors = [all_errors; bias_results(w, :)'];
+    groups = [groups; w*ones(num_freqs, 1)];
+end
+boxplot(all_errors, groups, 'Labels', windows(:,1));
+title('各窗函数误差分布对比');
+ylabel('绝对误差 (Hz)');
+set(gca, 'XTickLabelRotation', 45);
+grid on;
 
 % 4. 最优窗函数选择（每个频率点）
 [~, best_window_idx] = min(bias_results);
